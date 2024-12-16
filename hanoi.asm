@@ -100,3 +100,58 @@ section .text                         ; Seção contendo o código executável d
         mov esp, ebp                  ; Restaura o ponteiro da pilha para o estado anterior
         pop ebp                       ; Restaura o valor de ebp
         ret                           ; Retorna da função hanoi
+
+    movimento:
+        push ebp                      ; Salva o valor de ebp na pilha para o contexto de impressão
+        mov ebp, esp                  ; Define esp como base da pilha para acessar os parâmetros
+
+        mov ecx, move               
+        mov edx, tam_move           
+        call escrever            
+
+        mov eax, [ebp + 8]            ; Carrega o número do disco a ser movido
+        add al, 48                    ; Converte o número para o formato ASCII
+        mov [disc], al                ; Armazena o número do disco em "disc"
+        mov ecx, disc                 ; Carrega o endereço de "disc" em ecx
+        mov edx, tam_um_dig           ; Define o tamanho do número do disco
+        call escrever                 ; Escreve o número do disco
+
+        mov ecx, torre_inicial     
+        mov edx, tam_inicial         
+        call escrever          
+
+        mov eax, [ebp + 12]           ; Carrega o endereço da torre de origem
+        mov al, [eax]                 ; Carrega o caractere ASCII da torre de origem
+        mov [torre_um], al            ; Armazena o caractere da torre de origem
+        mov ecx, torre_um             ; Carrega o endereço de "torre_um"
+        mov edx, tam_um_dig           ; Tamanho do caractere
+        call escrever                 ; Escreve a torre de origem
+
+        mov ecx, torre_final   
+        mov edx, tam_final    
+        call escrever       
+
+        mov eax, [ebp + 16]           ; Carrega o endereço da torre de destino
+        mov al, [eax]                 ; Carrega o caractere da torre de destino
+        mov [torre_dois], al          ; Armazena o caractere da torre de destino
+        mov ecx, torre_dois           ; Carrega o endereço de "torre_dois"
+        mov edx, tam_um_dig           ; Tamanho do caractere
+        call escrever                 ; Escreve a torre de destino
+
+        mov ecx, nova_linha         
+        mov edx, 1            
+        call escrever          
+
+        mov esp, ebp                  ; Restaura esp para o valor original
+        pop ebp                       ; Restaura o valor de ebp
+        ret                           ; Retorna da função de impressão
+
+    escrever:
+        mov eax, 4            
+        mov ebx, 1              
+        int 0x80             
+        ret           
+
+    fim:
+        mov eax, 1 
+        int 0x80
